@@ -78,3 +78,23 @@ munin-run redshift_disk_queries
 # Restart the munin-node (if everything is ok)
 service munin-node restart
 ```
+
+## Redshift Disk Usage
+
+This plugin shows how much percent of the disk is used.
+
+To make use of the commit queue plugin, simply create a simlink in the plugins directory for the munin node.
+
+```bash
+# Symlink the plugin in the munin-plugins dir:
+ln -s /usr/share/munin/plugins/munin-redshift-plugins/redshift_disk_usage.sh redshift_disk_usage
+
+# Test it like this (config):
+munin-run redshift_disk_usage config 
+
+# Then run it like this (should display a value)
+munin-run redshift_disk_usage
+
+# Restart the munin-node (if everything is ok)
+service munin-node restart
+```
