@@ -1,6 +1,6 @@
-# munin-redshift-plugins
+# Munin-redshift-plugins
 
-Munin plugins for monitoring redshift database.
+Bash munin plugins for monitoring an AWS Redshift database.
 
 To make use of this plugins, you should first make sure you have the right configuration. 
 

@@ -13,15 +13,14 @@ TEST=0
 type psql >/dev/null 2>&1 || { echo >&2 "I require psql but it's not installed. Aborting."; exit 1; }
 
 output_config() {
-    echo "graph_title Redshift commit queue"
-    echo "graph_vlabel Time in seconds"
+    echo "graph_title Redshift disk usage percent"
+    echo "graph_args --rigid --lower-limit 0 --upper-limit 100 --vertical-label %"
+    echo "graph_vlabel Disk usage"
     echo "graph_category redshift"
-    echo "graph_info Display info about the redshift commit queue"
-    echo "graph_order queue_time_sec commit_time_sec queue_size"
 
-    echo "queue_time_sec.label Average commit queue time"
-    echo "commit_time_sec.label Average commit time"
-    echo "queue_size.label Average commit queue size"
+    echo "usage.label usage"
+    echo "usage.info usage"
+    echo "usage.type GAUGE"
 }
 
 verbose() {
@@ -45,13 +44,13 @@ output_values() {
         --port="${redshift_port}" \
         --dbname="${redshift_db}" \
         --command="
-            select
-                avg( datediff(ms,startqueue,startwork)::float ) as queue_time,
-                avg( datediff(ms, startwork, endtime)::float ) as commit_time,
-                avg( queuelen::float )
-            from stl_commit_stats
-            where startqueue >= getdate() - interval '5 minutes'
-            and queuelen >= 1;")
+            SELECT
+                SUM(used)/1024 AS used_gbytes,
+                SUM(capacity)/1024 AS capacity_gbytes
+            FROM
+                stv_partitions
+            WHERE
+                part_begin=0;")
 
     psql_exit_status=$?
 
@@ -63,16 +62,11 @@ output_values() {
 
     verbose "Raw result: ${result}"
 
-    #echo "" | awk -F" | " "{print $0}"
-    echo "${result}" | awk -F'|' '{
-        printf "queue_time_sec.value %.2f\n", $1 / 1000
-        printf "commit_time_sec.value %.2f\n", $2 / 1000
-        printf "queue_size.value %.2f\n", $3
-    }'
+    echo "${result}" | awk -F'|' '{ printf "usage.value %.2f\n", ( $1 / $2 ) * 100 }'
 }
 
 output_usage() {
-    printf >&2 "%s - munin plugin to graph the redshift commit queue\n" ${0##*/}
+    printf >&2 "%s - munin plugin to graph the redshift disk usage\n" ${0##*/}
     printf >&2 "Usage: %s [config|test]\n" ${0##*/}
 }
 
