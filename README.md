@@ -33,17 +33,17 @@ To make use of the commit queue plugin, simply create a simlink in the plugins d
 The output will be a graph which displays the average cmmit queue time (in seconds), the average commit time and the
 average commit queue size. We will gather the data from the last 5 minutes. 
 
-```
-# symlink the plugins in the munin-plugins dir:
+```bash
+# Symlink the plugin in the munin-plugins dir:
 ln -s /usr/share/munin/plugins/munin-redshift-plugins/redshift_commit_queue.sh redshift_commit_queue
 
-# test it like this (config):
+# Test it like this (config):
 munin-run redshift_commit_queue config 
 
-# test it like this:
+# Then run it like this (should display a value)
 munin-run redshift_commit_queue
 
-# restart the munin-node (if everything is ok)
+# Restart the munin-node (if everything is ok)
 service munin-node restart
 ```
 
@@ -56,6 +56,25 @@ We have build in a "cron" mode, which can be used to collect the data. Munin wil
 data.
 
 To setup this plugin, first create a cronjob which collects the data. For example in `/etc/crontab`:
+```
+# Collect redshift disk-based queries (every hour)
+0   *   *   *   *   root    munin-run redshift_disk_queries cron
+```
 
+Then, just install the script as a normal script:
+```bash
+# Symlink the plugin in the munin-plugins dir:
+ln -s /usr/share/munin/plugins/munin-redshift-plugins/redshift_disk_queries.sh redshift_disk_queries
 
- 
+# Test it like this (config):
+munin-run redshift_disk_queries config
+
+# ONLY FIRST RUN, Fetch the data (note, has no output, takes some time!):
+munin-run redshift_disk_queries cron 
+
+# Then run the plugin (should output a value)
+munin-run redshift_disk_queries
+
+# Restart the munin-node (if everything is ok)
+service munin-node restart
+```

@@ -14,8 +14,8 @@ tmp_result_file=/tmp/redshift_diskbased_queries_munin
 type psql >/dev/null 2>&1 || { echo >&2 "I require psql but it's not installed. Aborting."; exit 1; }
 
 output_config() {
-    echo "graph_title Redshift disk queries"
-    echo "graph_vlabel Number of queries on disk"
+    echo "graph_title Redshift disk queries per hour"
+    echo "graph_vlabel Nr of disk queries (per hour)"
     echo "graph_category redshift"
     echo "graph_info Display info about how many queries are executed on disk"
 
