@@ -66,7 +66,7 @@ store_result() {
         exit ${psql_exit_status};
     fi
 
-    echo "${result}" >> ${tmp_result_file}
+    echo "${result}" > ${tmp_result_file}
 }
 
 output_values() {
