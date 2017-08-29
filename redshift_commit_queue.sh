@@ -8,6 +8,7 @@ redshift_db=${redshift_db}
 
 export PGPASSWORD=${redshift_pass}
 
+TEST=0
 
 type psql >/dev/null 2>&1 || { echo >&2 "I require psql but it's not installed. Aborting."; exit 1; }
 
@@ -23,7 +24,21 @@ output_config() {
     echo "queue_size.label Average commit queue size"
 }
 
+verbose()
+{
+    if [[ ${TEST} -eq 1 ]];
+    then
+        echo $1;
+    fi
+}
+
 output_values() {
+    verbose "Start collecting data from redshift"
+    verbose "Host: ${redshift_host}"
+    verbose "User: ${redshift_user}"
+    verbose "Port: ${redshift_port}"
+    verbose "Database: ${redshift_db}"
+
     result=$(psql \
         --tuples-only \
         --host="${redshift_host}" \
@@ -66,6 +81,11 @@ case $# in
         ;;
     1)
         case $1 in
+            test)
+                TEST=1
+                output_values
+                ;;
+
             config)
                 output_config
                 ;;
