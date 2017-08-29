@@ -72,7 +72,7 @@ output_values() {
 
 output_usage() {
     printf >&2 "%s - munin plugin to graph the redshift commit queue\n" ${0##*/}
-    printf >&2 "Usage: %s [config]\n" ${0##*/}
+    printf >&2 "Usage: %s [config|test]\n" ${0##*/}
 }
 
 case $# in

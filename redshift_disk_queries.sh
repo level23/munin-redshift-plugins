@@ -80,7 +80,7 @@ output_values() {
 
 output_usage() {
     printf >&2 "%s - munin plugin to graph disk based queries in redshift\n" ${0##*/}
-    printf >&2 "Usage: %s [config] [cron]\n" ${0##*/}
+    printf >&2 "Usage: %s [config|test|cron]\n" ${0##*/}
 }
 
 case $# in
