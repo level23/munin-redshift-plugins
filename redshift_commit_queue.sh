@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # You should create a munin plugin configuration with these variables:
-#env.host
-#env.port
-#env.user
-#env.pass
-#env.dbname
+#env.redshift_host
+#env.redshift_port
+#env.redshift_user
+#env.redshift_pass
+#env.redshift_db
 
 redshift_host=${redshift_host:-localhost}
 redshift_user=${redshift_user}
@@ -21,6 +21,7 @@ type psql >/dev/null 2>&1 || { echo >&2 "I require psql but it's not installed. 
 output_config() {
     echo "graph_title Redshift commit queue"
     echo "graph_vlabel Time in seconds"
+    echo "graph_category redshift"
     echo "graph_info Display info about the redshift commit queue"
     echo "graph_order queue_time_sec commit_time_sec queue_size"
 
