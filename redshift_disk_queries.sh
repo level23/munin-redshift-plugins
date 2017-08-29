@@ -55,7 +55,6 @@ store_result() {
 output_values() {
 
     result=$(cat "${tmp_result_file}")
-    echo $result;
     echo "${result}" | awk '{
         printf "disk_queries.value %.2f\n", $0
     }'
