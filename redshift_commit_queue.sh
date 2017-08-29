@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# You should create a munin plugin configuration with these variables:
-#env.redshift_host
-#env.redshift_port
-#env.redshift_user
-#env.redshift_pass
-#env.redshift_db
-
 redshift_host=${redshift_host:-localhost}
 redshift_user=${redshift_user}
 redshift_pass=${redshift_pass}
@@ -43,7 +36,7 @@ output_values() {
                 avg( datediff(ms, startwork, endtime)::float ) as commit_time,
                 avg( queuelen::float )
             from stl_commit_stats
-            where startqueue >= dateadd(hour, -1, current_Date)
+            where startqueue >= getdate() - interval '5 minutes'
             and queuelen >= 1;")
 
     psql_exit_status=$?
@@ -63,7 +56,7 @@ output_values() {
 }
 
 output_usage() {
-    printf >&2 "%s - munin plugin to graph an example value\n" ${0##*/}
+    printf >&2 "%s - munin plugin to graph the redshift commit queue\n" ${0##*/}
     printf >&2 "Usage: %s [config]\n" ${0##*/}
 }
 
