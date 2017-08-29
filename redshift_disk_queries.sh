@@ -26,8 +26,7 @@ output_config() {
 #
 # Display verbose output if wanted
 #
-verbose()
-{
+verbose() {
     if [[ ${TEST} -eq 1 ]];
     then
         echo $1;
@@ -71,7 +70,6 @@ store_result() {
 }
 
 output_values() {
-
     result=$(cat "${tmp_result_file}")
     echo "${result}" | awk '{
         printf "disk_queries.value %.2f\n", $0
@@ -91,6 +89,9 @@ case $# in
         case $1 in
             test)
                 TEST=1
+                verbose "First, Store our result (can take a while)"
+                store_result
+                verbose "Now, output our values"
                 output_values
                 ;;
 

@@ -24,8 +24,7 @@ output_config() {
     echo "queue_size.label Average commit queue size"
 }
 
-verbose()
-{
+verbose() {
     if [[ ${TEST} -eq 1 ]];
     then
         echo $1;
