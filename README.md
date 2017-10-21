@@ -28,7 +28,7 @@ git clone https://github.com/level23/munin-redshift-plugins.git
 
 ## Redshift Commit Queue
 
-To make use of the commit queue plugin, simply create a simlink in the plugins directory for the munin node.
+To make use of the commit queue plugin, simply create a symlink in the plugins directory for the munin node.
 
 The output will be a graph which displays the average cmmit queue time (in seconds), the average commit time and the
 average commit queue size. We will gather the data from the last 5 minutes. 
@@ -46,6 +46,10 @@ munin-run redshift_commit_queue
 # Restart the munin-node (if everything is ok)
 service munin-node restart
 ```
+
+Example graph:
+![Example graph of commit queue](images/redshift_commit_queue.png)
+
 
 ## Redshift Disk-based queries.
 
@@ -79,11 +83,14 @@ munin-run redshift_disk_queries
 service munin-node restart
 ```
 
+Example graph:
+![Example graph of disk based queries](images/redshift_disk_queries.png)
+
 ## Redshift Disk Usage
 
 This plugin shows how much percent of the disk is used.
 
-To make use of the commit queue plugin, simply create a simlink in the plugins directory for the munin node.
+To make use of the commit queue plugin, simply create a symlink in the plugins directory for the munin node.
 
 ```bash
 # Symlink the plugin in the munin-plugins dir:
@@ -98,3 +105,6 @@ munin-run redshift_disk_usage
 # Restart the munin-node (if everything is ok)
 service munin-node restart
 ```
+
+Example graph:
+![Example graph of disk usage](images/redshift_disk_usage.png)
